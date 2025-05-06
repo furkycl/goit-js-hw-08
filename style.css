@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  margin: 0 auto; /* Take the content middle of the page */
+  padding: 20px;
+}
+
+.gallery {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.gallery-image {
+  width: 510px;
+  height: 340px;
+}
+
+.gallery-image:hover {
+  transform: scale(1.1);
+}

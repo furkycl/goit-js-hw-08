@@ -68,7 +68,7 @@ const gallery = document.querySelector(".gallery");
 //Remove < and > from object of images to make links work
 const rawImages = images.map((image) => ({
   ...image, //take the rest as default
-  preview: image.preview.replace(/^<|>$/g, ""), // Regular Expression RegExp ^< defines remove string has < in the begining ^ -> defines begining. | -> for or operation. >$ $ -> defines end of the string. /g g flag means global it keep repeat for the all characters in the process
+  preview: image.preview.replace(/^<|>$/g, ""), // Regular Expression RegExp ^< defines remove string has < in the beginning ^ -> defines beginning. | -> for or operation. >$ $ -> defines end of the string. /g g flag means global it keep repeat for the all characters in the process
   original: image.original.replace(/^<|>$/g, ""),
 }));
 const galleryWriter = rawImages
@@ -82,3 +82,25 @@ const galleryWriter = rawImages
   })
   .join("");
 gallery.innerHTML = galleryWriter;
+
+gallery.addEventListener("click", (event) => {
+  event.preventDefault(); // prevent from default a href action
+  const target = event.target;
+  if (target.nodeName !== "IMG") {
+    // node name only accepts string upperCase !!!! otherwise it doesn't work
+    return;
+  }
+  // not use currentTarget target will give pin point element
+  const originalImageURL = target.dataset.source;
+
+  const instance = basicLightbox.create(`
+        <img src="${originalImageURL}" alt="${target.alt}">`);
+  instance.show();
+  const closeOnEsc = (e) => {
+    if (e.key === "Escape") {
+      instance.close();
+      document.removeEventListener("keydown", closeOnEsc);
+    }
+  };
+  document.addEventListener("keydown", closeOnEsc);
+});
